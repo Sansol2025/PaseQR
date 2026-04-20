@@ -1,0 +1,38 @@
+"use server";
+
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
+
+export async function createEvent(formData: {
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  cover_image_url?: string;
+  organizer_id: string;
+}) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from('events')
+    .insert([
+      {
+        title: formData.title,
+        description: formData.description,
+        date: formData.date,
+        location: formData.location,
+        cover_image_url: formData.cover_image_url || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000',
+        organizer_id: formData.organizer_id,
+      }
+    ])
+    .select();
+
+  if (error) {
+    console.error("Error creating event:", error);
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath('/dashboard/eventos');
+  revalidatePath('/');
+  return { success: true, data };
+}
