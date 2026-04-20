@@ -27,9 +27,11 @@ export async function login(formData: FormData) {
 
   revalidatePath("/", "layout");
 
-  if (profile?.role === "organizer" || profile?.role === "admin") {
+  const userRole = profile?.role as any;
+
+  if (userRole === "organizer" || userRole === "admin") {
     redirect("/dashboard");
-  } else if (profile?.role === "scanner") {
+  } else if (userRole === "scanner") {
     redirect("/escaner");
   } else {
     redirect("/mis-entradas");
