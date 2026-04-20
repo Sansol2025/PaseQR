@@ -1,12 +1,54 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Ticket, Search, User, Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Ticket, Search, User, Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/client";
+import { logout } from "@/lib/actions/auth";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    
+    // Check initial session
+    const getSession = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUser(user);
+        // Get role
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+        if (profile) setRole(profile.role);
+      }
+    };
+    
+    getSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user || null);
+      if (session?.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single();
+        if (profile) setRole(profile.role);
+      } else {
+        setRole(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="fixed top-0 w-full z-50 bg-[#05070A]/80 backdrop-blur-md border-b border-white/5">
@@ -26,24 +68,41 @@ export function Navbar() {
           <Link href="/" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Inicio</Link>
           <Link href="/boliches" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Boliches</Link>
           <Link href="/festivales" className="text-sm font-medium text-white/70 hover:text-white transition-colors">Festivales</Link>
-          <Link href="/dashboard" className="text-sm font-medium text-[#00E5FF] hover:text-[#00E5FF]/80 transition-colors">Soy Organizador</Link>
+          {(role === 'organizer' || role === 'admin') && (
+            <Link href="/dashboard" className="text-sm font-medium text-[#00E5FF] hover:text-[#00E5FF]/80 transition-colors">Dashboard</Link>
+          )}
         </nav>
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10 hidden md:flex">
-            <Search className="w-5 h-5" />
-          </Button>
-          <Link href="/login" className="hidden md:block">
-            <Button variant="outline" className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white">
-              Iniciar Sesión
-            </Button>
-          </Link>
-          <Link href="/mis-entradas" className="hidden md:block">
-            <Button className="bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] font-bold">
-              Mis Entradas
-            </Button>
-          </Link>
+          {!user ? (
+            <>
+              <Link href="/login" className="hidden md:block">
+                <Button variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10">
+                  Ingresar
+                </Button>
+              </Link>
+              <Link href="/login" className="hidden md:block">
+                <Button className="bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] font-bold">
+                  Empezar
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Link href={role === 'organizer' || role === 'admin' ? '/dashboard' : '/mis-entradas'}>
+                <Button variant="outline" className="hidden md:flex bg-white/5 border-white/10 text-white gap-2">
+                  <User className="w-4 h-4" /> 
+                  {role === 'organizer' || role === 'admin' ? 'Dashboard' : 'Mis Tickets'}
+                </Button>
+              </Link>
+              <form action={logout}>
+                <Button variant="ghost" size="icon" className="text-white/40 hover:text-red-400">
+                  <LogOut className="w-5 h-5" />
+                </Button>
+              </form>
+            </div>
+          )}
           
           {/* Mobile Menu Toggle */}
           <Button 
@@ -64,20 +123,27 @@ export function Navbar() {
             <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-bold text-white uppercase italic border-b border-white/5 pb-4">Inicio</Link>
             <Link href="/boliches" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-bold text-white uppercase italic border-b border-white/5 pb-4">Boliches</Link>
             <Link href="/festivales" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-bold text-white uppercase italic border-b border-white/5 pb-4">Festivales</Link>
-            <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-bold text-[#00E5FF] uppercase italic">Soy Organizador</Link>
+            {user && (
+               <Link href={role === 'organizer' || role === 'admin' ? '/dashboard' : '/mis-entradas'} onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-bold text-[#00E5FF] uppercase italic">
+                  Mi Perfil
+               </Link>
+            )}
           </nav>
           
           <div className="flex flex-col gap-4">
-            <Link href="/mis-entradas" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button className="w-full h-14 bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] font-black uppercase text-lg">
-                Mis Entradas
-              </Button>
-            </Link>
-            <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button variant="outline" className="w-full h-14 border-white/10 text-white font-bold uppercase text-lg">
-                Iniciar Sesión
-              </Button>
-            </Link>
+            {!user ? (
+               <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="w-full h-14 bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] font-black uppercase text-lg">
+                    Iniciar Sesión
+                  </Button>
+               </Link>
+            ) : (
+              <form action={logout}>
+                <Button variant="destructive" className="w-full h-14 font-black uppercase text-lg gap-2">
+                  <LogOut className="w-5 h-5" /> Cerrar Sesión
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       )}
