@@ -1,8 +1,6 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Plus, Settings2, Users, Calendar, MapPin, Loader2 } from "lucide-react";
+import { Plus, Settings2, Users, Calendar, MapPin, Loader2, Trash2, Upload, Link as LinkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,13 +12,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
-import { createEvent } from "@/lib/actions/events";
+import { createEvent, deleteEvent } from "@/lib/actions/events";
 
 export default function EventosDashboard() {
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -46,11 +45,36 @@ export default function EventosDashboard() {
     fetchEvents();
   }, []);
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const supabase = createClient();
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `flyers/${fileName}`;
+
+    const { error: uploadError, data } = await supabase.storage
+      .from('event-flyers')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      alert("Error subiendo imagen: " + uploadError.message);
+    } else {
+      const { data: { publicUrl } } = supabase.storage
+        .from('event-flyers')
+        .getPublicUrl(filePath);
+      
+      setFormData({ ...formData, cover_image_url: publicUrl });
+    }
+    setUploading(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Usamos el ID de prueba por ahora (Socio PaseQR)
     const result = await createEvent({
       ...formData,
       organizer_id: '00000000-0000-0000-0000-000000000000'
@@ -64,6 +88,17 @@ export default function EventosDashboard() {
       alert("Error al crear evento: " + result.error);
     }
     setIsSubmitting(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("¿Seguro que quieres eliminar este evento?")) return;
+    
+    const result = await deleteEvent(id);
+    if (result.success) {
+      fetchEvents();
+    } else {
+      alert("Error al eliminar: " + result.error);
+    }
   };
 
   return (
@@ -121,15 +156,36 @@ export default function EventosDashboard() {
                   />
                 </div>
               </div>
+              
               <div className="space-y-2">
-                <label className="text-xs uppercase font-bold text-white/50">URL del Flyer (Imagen)</label>
-                <Input 
-                  placeholder="https://ejemplo.com/flyer.jpg"
-                  value={formData.cover_image_url}
-                  onChange={(e) => setFormData({...formData, cover_image_url: e.target.value})}
-                  className="bg-white/5 border-white/10 text-white h-12"
-                />
+                <label className="text-xs uppercase font-bold text-white/50">Flyer (Imagen)</label>
+                <div className="grid grid-cols-1 gap-2">
+                   <div className="flex items-center gap-2">
+                      <div className="relative flex-1">
+                        <Input 
+                          placeholder="Subir archivo..."
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileUpload}
+                          className="bg-white/5 border-white/10 text-white h-12 pt-2 cursor-pointer"
+                        />
+                        {uploading && <Loader2 className="absolute right-3 top-3.5 w-5 h-5 text-[#00E5FF] animate-spin" />}
+                      </div>
+                   </div>
+                   <div className="flex items-center gap-2 mt-1">
+                      <div className="h-[1px] flex-1 bg-white/10" />
+                      <span className="text-[10px] text-white/20 font-bold">O PEGAR URL</span>
+                      <div className="h-[1px] flex-1 bg-white/10" />
+                   </div>
+                   <Input 
+                      placeholder="https://ejemplo.com/flyer.jpg"
+                      value={formData.cover_image_url}
+                      onChange={(e) => setFormData({...formData, cover_image_url: e.target.value})}
+                      className="bg-white/5 border-white/10 text-white h-12"
+                    />
+                </div>
               </div>
+
               <div className="space-y-2">
                 <label className="text-xs uppercase font-bold text-white/50">Descripción</label>
                 <textarea 
@@ -144,7 +200,7 @@ export default function EventosDashboard() {
               
               <Button 
                 type="submit" 
-                disabled={isSubmitting}
+                disabled={isSubmitting || uploading}
                 className="w-full bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] font-black h-14 uppercase tracking-widest mt-4"
               >
                 {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Publicar Evento"}
@@ -179,10 +235,17 @@ export default function EventosDashboard() {
                 events.map(event => (
                   <tr key={event.id} className="hover:bg-white/[0.02] transition-colors group">
                     <td className="p-4 md:p-6">
-                      <p className="text-base md:text-lg font-bold text-white mb-1 group-hover:text-[#00E5FF] transition-colors">{event.title}</p>
-                      <div className="flex items-center gap-2 text-white/40 text-[11px]">
-                         <Calendar className="w-3 h-3" />
-                         {new Date(event.date).toLocaleDateString()}
+                      <div className="flex items-center gap-4">
+                         {event.cover_image_url && (
+                           <img src={event.cover_image_url} className="w-12 h-12 rounded-lg object-cover border border-white/10" alt="" />
+                         )}
+                         <div>
+                            <p className="text-base md:text-lg font-bold text-white mb-1 group-hover:text-[#00E5FF] transition-colors">{event.title}</p>
+                            <div className="flex items-center gap-2 text-white/40 text-[11px]">
+                               <Calendar className="w-3 h-3" />
+                               {new Date(event.date).toLocaleDateString()}
+                            </div>
+                         </div>
                       </div>
                     </td>
                     <td className="p-4 md:p-6 hidden md:table-cell">
@@ -198,6 +261,14 @@ export default function EventosDashboard() {
                             Gestionar
                           </Button>
                         </Link>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => handleDelete(event.id)}
+                          className="text-white/20 hover:text-red-400 h-9 w-9"
+                        >
+                           <Trash2 className="w-5 h-5" />
+                        </Button>
                       </div>
                     </td>
                   </tr>

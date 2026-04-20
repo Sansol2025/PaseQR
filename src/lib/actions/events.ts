@@ -36,3 +36,23 @@ export async function createEvent(formData: {
   revalidatePath('/');
   return { success: true, data };
 }
+
+export async function deleteEvent(id: string) {
+  const supabase = await createClient();
+
+  // Primero eliminamos los lotes asociados (por integridad)
+  await supabase.from('ticket_tiers').delete().eq('event_id', id);
+
+  const { error } = await supabase
+    .from('events')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath('/dashboard/eventos');
+  revalidatePath('/');
+  return { success: true };
+}
