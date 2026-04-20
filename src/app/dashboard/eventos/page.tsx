@@ -182,9 +182,11 @@ export default function EventosDashboard() {
                     </td>
                     <td className="p-4 md:p-6">
                       <div className="flex justify-end gap-3">
-                        <Button variant="outline" className="bg-white/5 border-white/10 text-white hover:bg-[#00E5FF]/10 hover:text-[#00E5FF] text-xs h-9">
-                          Gestionar
-                        </Button>
+                        <Link href={`/dashboard/eventos/${event.id}`}>
+                          <Button variant="outline" className="bg-white/5 border-white/10 text-white hover:bg-[#00E5FF]/10 hover:text-[#00E5FF] text-xs h-9">
+                            Gestionar
+                          </Button>
+                        </Link>
                       </div>
                     </td>
                   </tr>
