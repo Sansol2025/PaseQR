@@ -6,11 +6,11 @@ import { Search, MapPin, Ticket, Flame, Music, GlassWater } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const STORIES = [
-  { id: 1, label: "PaseQR Live", image: "https://images.unsplash.com/photo-1514525253361-bee0431870a4?auto=format&fit=crop&q=80&w=200&h=200" },
-  { id: 2, label: "Festivales", image: "https://images.unsplash.com/photo-1459749411177-042180ce673b?auto=format&fit=crop&q=80&w=200&h=200" },
-  { id: 3, label: "VIP Experiencias", image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80&w=200&h=200" },
-  { id: 4, label: "After Office", image: "https://images.unsplash.com/photo-1541532748991-99af99ad30af?auto=format&fit=crop&q=80&w=200&h=200" },
-  { id: 5, label: "Sorteos", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=200&h=200" },
+  { id: 1, label: "PaseQR Live", image: "https://images.unsplash.com/photo-1514525253361-bee0431870a4?auto=format&fit=crop&q=80&w=400" },
+  { id: 2, label: "Festivales", image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=400" },
+  { id: 3, label: "VIP Experiencias", image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80&w=400" },
+  { id: 4, label: "After Office", image: "https://images.unsplash.com/photo-1541532748991-99af99ad30af?auto=format&fit=crop&q=80&w=400" },
+  { id: 5, label: "Sorteos", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=400" },
 ];
 
 export function Hero() {
