@@ -28,6 +28,7 @@ export default function EventosDashboard() {
     description: "",
     date: "",
     location: "",
+    cover_image_url: "",
   });
 
   const fetchEvents = async () => {
@@ -57,7 +58,7 @@ export default function EventosDashboard() {
 
     if (result.success) {
       setIsOpen(false);
-      setFormData({ title: "", description: "", date: "", location: "" });
+      setFormData({ title: "", description: "", date: "", location: "", cover_image_url: "" });
       fetchEvents();
     } else {
       alert("Error al crear evento: " + result.error);
@@ -119,6 +120,15 @@ export default function EventosDashboard() {
                     className="bg-white/5 border-white/10 text-white h-12"
                   />
                 </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs uppercase font-bold text-white/50">URL del Flyer (Imagen)</label>
+                <Input 
+                  placeholder="https://ejemplo.com/flyer.jpg"
+                  value={formData.cover_image_url}
+                  onChange={(e) => setFormData({...formData, cover_image_url: e.target.value})}
+                  className="bg-white/5 border-white/10 text-white h-12"
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-xs uppercase font-bold text-white/50">Descripción</label>
