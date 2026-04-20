@@ -15,7 +15,7 @@ const STORIES = [
 
 export function Hero() {
   return (
-    <section className="relative h-[90vh] w-full overflow-hidden flex flex-col pt-20">
+    <section className="relative min-h-[85vh] w-full overflow-hidden flex flex-col pt-20">
       {/* Background with Dark Gradient */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#05070A]/50 to-[#05070A] z-10" />
@@ -28,7 +28,7 @@ export function Hero() {
       </div>
 
       {/* Content Container */}
-      <div className="container relative z-20 mx-auto px-4 flex-1 flex flex-col justify-end pb-12">
+      <div className="container relative z-20 mx-auto px-4 flex-1 flex flex-col justify-end pb-32 md:pb-40">
         
         {/* Stories Section (Instagram Style) */}
         <div className="w-full flex items-center gap-6 overflow-x-auto pb-12 no-scrollbar">
