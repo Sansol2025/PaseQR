@@ -49,14 +49,14 @@ export default function EventManagementPage() {
     const { data: eventData } = await supabase
       .from('events')
       .select('*')
-      .eq('id', id)
+      .eq('id', id as string)
       .single();
     
     // Fetch Tiers
     const { data: tiersData } = await supabase
       .from('ticket_tiers')
       .select('*')
-      .eq('event_id', id);
+      .eq('event_id', id as string);
 
     if (eventData) setEvent(eventData);
     if (tiersData) setTiers(tiersData);
