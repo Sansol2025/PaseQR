@@ -57,10 +57,10 @@ export default function MyTicketsPage() {
     <div className="container mx-auto px-4 pt-28 pb-20">
       
       <div className="mb-10 text-center md:text-left">
-        <h1 className="text-3xl md:text-5xl font-bold text-white uppercase italic tracking-tighter mb-3">
+        <h1 className="text-4xl md:text-6xl font-bold text-white uppercase italic tracking-tighter mb-3">
           Mi <span className="text-[#00E5FF]">Billetera</span>
         </h1>
-        <p className="text-white/60">Tus entradas digitales con QR de alta seguridad.</p>
+        <p className="text-white/60 text-sm md:text-base">Tus entradas digitales con QR de alta seguridad.</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -82,7 +82,7 @@ export default function MyTicketsPage() {
                 <div key={ticket.id} className="bg-[#0A1F44] border-2 border-[#00E5FF]/20 rounded-3xl overflow-hidden flex flex-col md:flex-row">
                   
                   {/* Left Side: Ticket Details */}
-                  <div className="p-6 md:p-8 flex-1 relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#00E5FF]/10 via-[#0A1F44] to-[#0A1F44]">
+                  <div className="p-6 md:p-10 flex-1 relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-[#00E5FF]/10 via-[#0A1F44] to-[#0A1F44]">
                     <div className="mb-4">
                       <Badge className="bg-[#00E5FF]/20 text-[#00E5FF] border-none mb-2 hover:bg-[#00E5FF]/30">{ticket.tier_name}</Badge>
                       <h3 className="text-2xl font-bold text-white uppercase italic leading-tight mb-2">
@@ -140,27 +140,27 @@ export default function MyTicketsPage() {
                   </div>
 
                   {/* Right Side: QR Code Area (Bright inside) */}
-                  <div className="bg-white p-6 md:p-8 flex flex-col items-center justify-center border-l-2 border-dashed border-[#05070A] relative w-full md:w-64 shrink-0">
+                  <div className="bg-white p-8 md:p-10 flex flex-col items-center justify-center border-t-2 md:border-t-0 md:border-l-2 border-dashed border-[#05070A] relative w-full md:w-72 shrink-0">
                      {/* Perforation holes trick */}
-                     <div className="absolute top-0 -left-3 w-6 h-6 bg-[#05070A] rounded-full -translate-y-1/2" />
-                     <div className="absolute bottom-0 -left-3 w-6 h-6 bg-[#05070A] rounded-full translate-y-1/2" />
+                     <div className="absolute -top-3 md:top-0 -left-3 w-6 h-6 bg-[#05070A] rounded-full" />
+                     <div className="absolute -bottom-3 md:bottom-0 -left-3 w-6 h-6 bg-[#05070A] rounded-full" />
                      
-                     <div className="flex flex-col items-center gap-2 w-full text-center mb-4">
-                        <div className="flex items-center gap-1 text-[#021227]/50 uppercase font-black text-[10px] tracking-widest mb-1">
+                     <div className="flex flex-col items-center gap-2 w-full text-center">
+                        <div className="flex items-center gap-1 text-[#021227]/50 uppercase font-black text-[10px] tracking-widest mb-2">
                           <Sun className="w-3 h-3" /> BRILLO MÁXIMO
                         </div>
-                        <div className="p-3 bg-white rounded-xl shadow-sm border border-gray-100">
+                        <div className="p-4 bg-white rounded-2xl shadow-sm border border-gray-100">
                            <QRCodeSVG 
                              value={ticket.id}
-                             size={160}
+                             size={180}
                              level={"H"}
                              fgColor="#05070A"
                              bgColor="#ffffff"
                            />
                         </div>
                      </div>
-                     <p className="text-[#021227]/60 text-[10px] uppercase font-bold tracking-widest text-center mt-2 break-all max-w-[160px]">
-                        {ticket.id.split('-')[0]}-{ticket.id.split('-')[4]}
+                     <p className="text-[#021227]/60 text-[10px] uppercase font-bold tracking-widest text-center mt-4 break-all opacity-40">
+                        {ticket.id}
                      </p>
                   </div>
                 </div>
