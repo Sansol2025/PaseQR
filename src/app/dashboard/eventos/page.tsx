@@ -58,6 +58,8 @@ export default function EventosDashboard() {
       setIsOpen(false);
       setFormData({ title: "", description: "", date: "", location: "" });
       fetchEvents();
+    } else {
+      alert("Error al crear evento: " + result.error);
     }
     setIsSubmitting(false);
   };
