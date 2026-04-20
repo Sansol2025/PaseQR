@@ -69,11 +69,13 @@ export default function EventosDashboard() {
         <h1 className="text-3xl font-black text-white uppercase tracking-wider">Gestión de Eventos</h1>
         
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] px-6 py-6 rounded-xl font-bold uppercase gap-2">
-              <Plus className="w-5 h-5" /> Crear Evento
-            </Button>
-          </DialogTrigger>
+          <DialogTrigger 
+            render={
+              <Button className="bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] px-6 py-6 rounded-xl font-bold uppercase gap-2">
+                <Plus className="w-5 h-5" /> Crear Evento
+              </Button>
+            }
+          />
           <DialogContent className="bg-[#05070A] border-white/10 text-white sm:max-w-lg">
             <DialogHeader>
               <DialogTitle className="text-2xl uppercase italic font-black">Nuevo Evento</DialogTitle>
