@@ -99,11 +99,13 @@ export default function MyTicketsPage() {
                       </div>
 
                       <Dialog>
-                        <DialogTrigger asChild>
-                           <Button variant="outline" className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white rounded-xl gap-2 font-bold text-xs uppercase tracking-wider">
-                             <Send className="w-4 h-4" /> Transferir
-                           </Button>
-                        </DialogTrigger>
+                        <DialogTrigger 
+                          render={
+                            <Button variant="outline" className="bg-white/5 border-white/10 text-white hover:bg-white/10 hover:text-white rounded-xl gap-2 font-bold text-xs uppercase tracking-wider">
+                              <Send className="w-4 h-4" /> Transferir
+                            </Button>
+                          }
+                        />
                         <DialogContent className="bg-[#05070A] border-white/10 text-white sm:max-w-md">
                           <DialogHeader>
                             <DialogTitle className="text-xl uppercase italic">Transferir Entrada</DialogTitle>
