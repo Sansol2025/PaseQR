@@ -76,7 +76,7 @@ export default function EventManagementPage() {
       .from('ticket_tiers')
       .insert([
         {
-          event_id: id,
+          event_id: id as string,
           name: newTier.name,
           price: parseFloat(newTier.price),
           capacity: parseInt(newTier.capacity),
