@@ -15,43 +15,47 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
-const MY_TICKETS = [
-  {
-    id: "f3c834a0-5b12-4f76-8051-bd15de358bfb", // Real UUID for the QR
-    event_title: "Techno Night: Genesis",
-    event_date: "VIERNES 24 MAYO • 23:30",
-    tier_name: "VIP Experience",
-    status: "valid",
-    location: "Club Mamba, City Center"
-  },
-  {
-    id: "b9e94441-2b0e-43bd-a8b2-a4e9b9cfec09",
-    event_title: "Bresh: Edición Especial",
-    event_date: "SÁBADO 25 MAYO • 23:59",
-    tier_name: "Preventa 1",
-    status: "transferred",
-    location: "Estadio Norte"
-  }
-];
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 export default function MyTicketsPage() {
   const [transferEmail, setTransferEmail] = useState("");
   const [isTransferring, setIsTransferring] = useState(false);
-  const [tickets, setTickets] = useState(MY_TICKETS);
+  const [tickets, setTickets] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function fetchTickets() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+
+      // Por ahora no tenemos la tabla de 'purchased_tickets', pero 
+      // dejamos el array vacío para que el usuario vea su billetera real.
+      // Más adelante consultaremos: await supabase.from('user_tickets').select('*, event:events(*)');
+      
+      setTickets([]); 
+      setLoading(false);
+    }
+    fetchTickets();
+  }, [router]);
 
   const activeTickets = tickets.filter(t => t.status === "valid");
-  const pastTickets = tickets.filter(t => t.status !== "valid");
+  const pastTickets = tickets.filter(t => (t.status !== "valid" && t.status !== "active"));
 
-  const handleTransfer = async (ticketId: string) => {
-    setIsTransferring(true);
-    // Simulate server action
-    await new Promise(res => setTimeout(res, 1500));
-    
-    setTickets(prev => prev.map(t => 
-      t.id === ticketId ? { ...t, status: "transferred" } : t
-    ));
-    setIsTransferring(false);
-  };
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="w-10 h-10 text-[#00E5FF] animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 pt-28 pb-20">
