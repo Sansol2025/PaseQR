@@ -183,7 +183,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      buy_ticket: {
+        Args: {
+          p_event_id: string
+          p_tier_id: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       user_role: 'user' | 'organizer' | 'scanner' | 'pr' | 'admin'
