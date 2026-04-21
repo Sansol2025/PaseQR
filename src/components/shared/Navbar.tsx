@@ -62,6 +62,7 @@ export function Navbar() {
   }, []);
 
   return (
+    <>
     <header className="fixed top-0 w-full z-50 bg-[#05070A]/80 backdrop-blur-md border-b border-white/5">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         {/* Logo */}
@@ -129,76 +130,78 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-20 bg-[#05070A] z-[100] overflow-y-auto border-t border-white/5">
-          <div className="container mx-auto px-6 py-8 flex flex-col gap-8">
-            {/* Navegación Principal */}
-            <div className="flex flex-col gap-2">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00E5FF] mb-4 opacity-50">Explorar</p>
-              <Link 
-                href="/boliches" 
-                className="text-3xl font-black text-white hover:text-[#00E5FF] transition-all uppercase italic tracking-tighter"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Boliches
-              </Link>
-              <Link 
-                href="/festivales" 
-                className="text-3xl font-black text-white hover:text-[#00E5FF] transition-all uppercase italic tracking-tighter"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Festivales
-              </Link>
-              <Link 
-                href="/eventos" 
-                className="text-3xl font-black text-white hover:text-[#00E5FF] transition-all uppercase italic tracking-tighter"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Cartelera
-              </Link>
-            </div>
+    </header>
+    
+    {/* Mobile Menu - MOVED OUTSIDE HEADER FOR COMPATIBILITY */}
+    {isMobileMenuOpen && (
+      <div className="md:hidden fixed inset-0 top-20 bg-[#05070A] z-[9999] overflow-y-auto border-t border-white/5 animate-in fade-in duration-200">
+        <div className="container mx-auto px-6 py-8 flex flex-col gap-8">
+          {/* Navegación Principal */}
+          <div className="flex flex-col gap-2">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#00E5FF] mb-4 opacity-50">Explorar</p>
+            <Link 
+              href="/boliches" 
+              className="text-3xl font-black text-white hover:text-[#00E5FF] transition-all uppercase italic tracking-tighter"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Boliches
+            </Link>
+            <Link 
+              href="/festivales" 
+              className="text-3xl font-black text-white hover:text-[#00E5FF] transition-all uppercase italic tracking-tighter"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Festivales
+            </Link>
+            <Link 
+              href="/eventos" 
+              className="text-3xl font-black text-white hover:text-[#00E5FF] transition-all uppercase italic tracking-tighter"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Cartelera
+            </Link>
+          </div>
 
-            <div className="h-px bg-white/5 w-full" />
+          <div className="h-px bg-white/5 w-full" />
 
-            {/* Acciones de Usuario */}
-            <div className="flex flex-col gap-4">
-              {!user ? (
-                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
-                  <Button className="w-full h-16 bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] font-black uppercase text-xl italic tracking-tighter shadow-[0_0_20px_rgba(0,229,255,0.3)]">
-                    Iniciar Sesión
+          {/* Acciones de Usuario */}
+          <div className="flex flex-col gap-4">
+            {!user ? (
+              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
+                <Button className="w-full h-16 bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-[#021227] font-black uppercase text-xl italic tracking-tighter shadow-[0_0_20px_rgba(0,229,255,0.3)]">
+                  Iniciar Sesión
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link 
+                  href={role === 'organizer' || role === 'admin' ? '/dashboard' : '/mis-entradas'} 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full"
+                >
+                  <Button variant="outline" className="w-full h-16 border-white/10 hover:border-[#00E5FF]/40 text-white font-black uppercase text-xl italic tracking-tighter">
+                    {role === 'organizer' || role === 'admin' ? 'Dashboard' : 'Mis Tickets'}
                   </Button>
                 </Link>
-              ) : (
-                <>
-                  <Link 
-                    href={role === 'organizer' || role === 'admin' ? '/dashboard' : '/mis-entradas'} 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full"
-                  >
-                    <Button variant="outline" className="w-full h-16 border-white/10 hover:border-[#00E5FF]/40 text-white font-black uppercase text-xl italic tracking-tighter">
-                      {role === 'organizer' || role === 'admin' ? 'Dashboard' : 'Mis Tickets'}
-                    </Button>
-                  </Link>
-                  <button 
-                    className="w-full h-16 bg-red-500/10 border border-red-500/20 text-red-500 font-black uppercase text-xl italic tracking-tighter gap-3 flex items-center justify-center rounded-xl active:scale-[0.98] transition-transform"
-                    onClick={handleSignOut}
-                  >
-                    <LogOut className="w-6 h-6" /> Cerrar Sesión
-                  </button>
-                </>
-              )}
-            </div>
+                <button 
+                  className="w-full h-16 bg-red-500/10 border border-red-500/20 text-red-500 font-black uppercase text-xl italic tracking-tighter gap-3 flex items-center justify-center rounded-xl active:scale-[0.98] transition-transform"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="w-6 h-6" /> Cerrar Sesión
+                </button>
+              </>
+            )}
+          </div>
 
-            {/* Footer del Menú */}
-            <div className="mt-auto pt-12 pb-8 text-center">
-              <p className="text-white/20 text-[10px] font-bold uppercase tracking-widest">
-                &copy; 2026 PASE<span className="text-[#00E5FF]">QR</span> PLATAFORMA
-              </p>
-            </div>
+          {/* Footer del Menú */}
+          <div className="mt-auto pt-12 pb-8 text-center">
+            <p className="text-white/20 text-[10px] font-bold uppercase tracking-widest">
+              &copy; 2026 PASE<span className="text-[#00E5FF]">QR</span> PLATAFORMA
+            </p>
           </div>
         </div>
-      )}
-    </header>
+      </div>
+    )}
+    </>
   );
 }
