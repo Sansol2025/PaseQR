@@ -151,13 +151,12 @@ export function Navbar() {
                   </Button>
                </Link>
             ) : (
-                <Button 
-                  variant="destructive" 
-                  className="w-full h-14 font-black uppercase text-lg gap-2"
+                <button 
+                  className="w-full h-14 bg-red-500/10 border border-red-500/20 text-red-500 font-black uppercase text-lg gap-2 flex items-center justify-center rounded-xl"
                   onClick={handleSignOut}
                 >
                   <LogOut className="w-5 h-5" /> Cerrar Sesión
-                </Button>
+                </button>
             )}
           </div>
         </div>
