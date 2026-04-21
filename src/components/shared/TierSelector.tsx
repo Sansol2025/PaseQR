@@ -44,7 +44,7 @@ export function TierSelector({ tiers, eventId }: { tiers: Tier[]; eventId: strin
         }
       } else if (result.success) {
         // Redirección exitosa (en el futuro sería a Mercado Pago o a una página de éxito)
-        router.push("/dashboard"); // Por ahora al dashboard para ver sus entradas
+        router.push("/mis-entradas");
       }
     });
   };
