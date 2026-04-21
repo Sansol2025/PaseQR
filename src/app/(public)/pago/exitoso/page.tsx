@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, Loader2, Ticket } from "lucide-react";
@@ -7,25 +8,18 @@ import { Button } from "@/components/ui/button";
 import { purchaseTicket } from "@/lib/actions/tickets";
 import Link from "next/link";
 
-export default function PagoExitosoPage() {
+function PagoExitosoContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [status, setStatus] = useState<"loading" | "done" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "done">("loading");
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
-    // MP sends these params on success
-    const paymentId = searchParams.get("payment_id");
     const eventId = searchParams.get("external_reference")?.split("|")[0];
     const tierId = searchParams.get("external_reference")?.split("|")[1];
 
     if (eventId && tierId) {
-      purchaseTicket(eventId, tierId).then((result) => {
-        if (result.success || result.error) {
-          // Even if already created by webhook, consider it successful
-          setStatus("done");
-        }
-      });
+      purchaseTicket(eventId, tierId).then(() => setStatus("done"));
     } else {
       setStatus("done");
     }
@@ -86,5 +80,17 @@ export default function PagoExitosoPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function PagoExitosoPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#05070A] flex items-center justify-center">
+        <Loader2 className="w-16 h-16 text-[#00E5FF] animate-spin" />
+      </div>
+    }>
+      <PagoExitosoContent />
+    </Suspense>
   );
 }
