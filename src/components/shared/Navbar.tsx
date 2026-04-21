@@ -14,10 +14,12 @@ export function Navbar() {
   const router = useRouter();
 
   const handleSignOut = async () => {
+    console.log("Iniciando cierre de sesión...");
     const supabase = createClient();
     await supabase.auth.signOut();
     setUser(null);
     setRole(null);
+    console.log("Redirigiendo...");
     window.location.href = "/";
   };
 
@@ -105,14 +107,13 @@ export function Navbar() {
                   {role === 'organizer' || role === 'admin' ? 'Dashboard' : 'Mis Tickets'}
                 </Button>
               </Link>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="text-white/40 hover:text-red-400"
+                <button 
+                  className="p-2 text-white/40 hover:text-red-400 transition-colors"
                   onClick={handleSignOut}
+                  title="Cerrar Sesión"
                 >
                   <LogOut className="w-5 h-5" />
-                </Button>
+                </button>
             </div>
           )}
           
