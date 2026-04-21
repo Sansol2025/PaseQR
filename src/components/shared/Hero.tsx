@@ -5,13 +5,6 @@ import { motion } from "framer-motion";
 import { Search, MapPin, Ticket, Flame, Music, GlassWater } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const STORIES = [
-  { id: 1, label: "PaseQR Live", image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=400" },
-  { id: 2, label: "Festivales", image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=400" },
-  { id: 3, label: "VIP Experiencias", image: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80&w=400" },
-  { id: 4, label: "After Office", image: "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&q=80&w=400" },
-  { id: 5, label: "Sorteos", image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=400" },
-];
 
 export function Hero() {
   return (
@@ -28,29 +21,8 @@ export function Hero() {
       </div>
 
       {/* Content Container */}
-      <div className="container relative z-20 mx-auto px-4 flex-1 flex flex-col justify-end pb-32 md:pb-40">
+      <div className="container relative z-20 mx-auto px-4 flex-1 flex flex-col justify-center pb-20 md:pb-32">
         
-        {/* Stories Section (Instagram Style) */}
-        <div className="w-full flex items-center gap-6 overflow-x-auto pb-12 no-scrollbar">
-          {STORIES.map((story) => (
-            <motion.div
-              key={story.id}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex flex-col items-center gap-2 cursor-pointer flex-shrink-0"
-            >
-              <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-[#00E5FF] to-[#0A1F44]">
-                <div className="w-full h-full rounded-full border-2 border-[#05070A] overflow-hidden bg-muted">
-                  <img src={story.image} alt={story.label} className="w-full h-full object-cover" />
-                </div>
-              </div>
-              <span className="text-[10px] font-medium text-white/70 uppercase tracking-tighter">
-                {story.label}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-
         {/* Hero Text */}
         <div className="max-w-3xl">
           <motion.h1 
