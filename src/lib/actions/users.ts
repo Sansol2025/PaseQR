@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-import { UserRole, UserProfile } from "@/types/users";
+import type { UserRole, UserProfile } from "@/types/users";
 export type { UserRole, UserProfile };
 
 export async function getAllUsers(): Promise<{ data: UserProfile[] | null; error: string | null }> {
