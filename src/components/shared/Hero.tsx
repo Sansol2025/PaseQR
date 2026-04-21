@@ -31,7 +31,7 @@ export function Hero() {
             transition={{ duration: 0.6 }}
             className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6 uppercase italic"
           >
-            Tu entrada al <span className="text-[#00E5FF] drop-shadow-[0_0_15px_rgba(0,229,255,0.4)]">Próximo Nivel</span>
+            VIVE TU NOCHE <span className="text-[#00E5FF] drop-shadow-[0_0_15px_rgba(0,229,255,0.4)]">SIN LÍMITES</span>
           </motion.h1>
           
           <motion.p 
@@ -40,7 +40,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-white/60 mb-10 max-w-2xl font-light"
           >
-            Seguridad absoluta con QR Dinámicos. Compra, transfiere y disfruta de los mejores eventos sin fricción.
+            Tu pase exclusivo a las fiestas y festivales más épicos. Rápido, digital y 100% seguro.
           </motion.p>
 
           {/* Quick Filters / Interaction */}
