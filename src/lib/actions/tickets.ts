@@ -73,3 +73,62 @@ export async function transferTicket(ticketId: string, recipientEmail: string) {
     return { error: error.message || "Ocurrió un error inesperado al transferir." };
   }
 }
+export async function purchaseTicket(eventId: string, tierId: string) {
+  const supabase = await createClient();
+
+  // 1. Validate session
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    return { error: "AUTH_REQUIRED", message: "Iniciá sesión para adquirir tu pase." };
+  }
+
+  try {
+    // 2. Get tier info (price and availability)
+    const { data: tier, error: tierError } = await supabase
+      .from('ticket_tiers')
+      .select('*')
+      .eq('id', tierId)
+      .single();
+
+    if (tierError || !tier) {
+      return { error: "NOT_FOUND", message: "El lote de entradas seleccionado ya no está disponible." };
+    }
+
+    if (tier.current_sold >= tier.capacity) {
+      return { error: "SOLD_OUT", message: "Este lote se ha agotado." };
+    }
+
+    // 3. Create the ticket (In a real flow, this would happen AFTER payment notification)
+    // For now, we simulate success for the user to see the flow.
+    const { data: ticket, error: insertError } = await supabase
+      .from('tickets')
+      .insert({
+        event_id: eventId,
+        user_id: session.user.id,
+        tier_id: tierId,
+        status: 'valid',
+        price_paid: tier.price
+      })
+      .select()
+      .single();
+
+    if (insertError) {
+      throw insertError;
+    }
+
+    // 4. Increment sold count in tier
+    await supabase
+      .from('ticket_tiers')
+      .update({ current_sold: (tier.current_sold || 0) + 1 })
+      .eq('id', tierId);
+
+    revalidatePath('/mis-entradas');
+    revalidatePath(`/eventos/${eventId}`);
+    
+    return { success: true, ticketId: ticket.id };
+
+  } catch (error: any) {
+    console.error("Error in purchaseTicket:", error);
+    return { error: "INTERNAL_ERROR", message: "Ocurrió un error al procesar tu solicitud." };
+  }
+}
