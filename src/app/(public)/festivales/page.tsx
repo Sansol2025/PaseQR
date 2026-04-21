@@ -51,7 +51,7 @@ export default async function FestivalesPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {events.map((event) => (
+            {events.map((event: any) => (
               <Link 
                 href={`/eventos/${event.id}`}
                 key={event.id} 
