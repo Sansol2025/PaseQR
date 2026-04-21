@@ -83,7 +83,7 @@ export default function MyTicketsPage() {
           {activeTickets.length === 0 ? (
             <div className="bg-white/5 border border-white/10 rounded-3xl p-10 text-center">
                <p className="text-white/50 mb-4 text-lg">No tienes entradas vigentes.</p>
-               <Link href="/eventos">
+               <Link href="/">
                  <Button className="font-bold text-[#021227] bg-[#00E5FF] hover:bg-[#00E5FF]/90 uppercase">Explorar Cartelera</Button>
                </Link>
             </div>

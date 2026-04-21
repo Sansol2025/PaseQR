@@ -169,7 +169,7 @@ export function Navbar() {
           </Link>
 
           <Link
-            href="/eventos"
+            href="/"
             onClick={() => setIsMobileMenuOpen(false)}
             className="flex items-center gap-4 px-4 py-4 rounded-2xl hover:bg-white/5 active:bg-white/10 transition-colors group"
           >
