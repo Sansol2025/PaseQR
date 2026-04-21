@@ -46,6 +46,11 @@ export default function MyTicketsPage() {
     fetchTickets();
   }, [router]);
 
+  const handleTransfer = async (ticketId: string) => {
+    // Implementación futura de transferencia
+    console.log("Transferring ticket:", ticketId);
+  };
+
   const activeTickets = tickets.filter(t => t.status === "valid");
   const pastTickets = tickets.filter(t => (t.status !== "valid" && t.status !== "active"));
 
