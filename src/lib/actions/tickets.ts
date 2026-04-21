@@ -132,3 +132,44 @@ export async function purchaseTicket(eventId: string, tierId: string) {
     return { error: "INTERNAL_ERROR", message: "Ocurrió un error al procesar tu solicitud." };
   }
 }
+
+export async function getMyTickets() {
+  const supabase = await createClient();
+
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { data: null, error: "No autenticado" };
+
+  const { data, error } = await supabase
+    .from('tickets')
+    .select(`
+      *,
+      event:events(title, date, location, cover_image_url),
+      tier:ticket_tiers(name)
+    `)
+    .eq('user_id', session.user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error("Error fetching my tickets:", error);
+    return { data: null, error: error.message };
+  }
+
+  // Formatear los datos para el componente
+  const formattedTickets = data.map(ticket => ({
+    id: ticket.id,
+    event_title: ticket.event.title,
+    event_date: new Date(ticket.event.date).toLocaleDateString('es-AR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }),
+    location: ticket.event.location,
+    tier_name: ticket.tier.name,
+    status: ticket.status,
+    cover_image: ticket.event.cover_image_url
+  }));
+
+  return { data: formattedTickets, error: null };
+}

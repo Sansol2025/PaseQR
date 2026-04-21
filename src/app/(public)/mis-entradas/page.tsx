@@ -19,6 +19,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { getMyTickets } from "@/lib/actions/tickets";
 
 export default function MyTicketsPage() {
   const [transferEmail, setTransferEmail] = useState("");
@@ -30,16 +31,12 @@ export default function MyTicketsPage() {
   useEffect(() => {
     async function fetchTickets() {
       try {
-        const supabase = createClient();
-        const { data: { session } } = await supabase.auth.getSession();
-
-        if (!session) {
-          router.push("/login");
-          return;
+        const { data, error } = await getMyTickets();
+        if (data) {
+          setTickets(data);
+        } else if (error) {
+          console.error("Error from getMyTickets:", error);
         }
-
-        // Simulación de carga de tickets reales
-        setTickets([]); 
       } catch (error) {
         console.error("Error loading tickets:", error);
       } finally {
@@ -70,9 +67,9 @@ export default function MyTicketsPage() {
       
       <div className="mb-10 text-center md:text-left">
         <h1 className="text-4xl md:text-6xl font-bold text-white uppercase italic tracking-tighter mb-3">
-          Mi <span className="text-[#00E5FF]">Billetera</span>
+          Mis <span className="text-[#00E5FF]">QRentradas</span>
         </h1>
-        <p className="text-white/60 text-sm md:text-base">Tus entradas digitales con QR de alta seguridad.</p>
+        <p className="text-white/60 text-sm md:text-base">Tus pases digitales con tecnología QR de alta seguridad.</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">

@@ -105,7 +105,7 @@ export function Navbar() {
               <Link href={role === 'organizer' || role === 'admin' ? '/dashboard' : '/mis-entradas'}>
                 <Button variant="outline" className="hidden md:flex bg-white/5 border-white/10 text-white gap-2">
                   <User className="w-4 h-4" /> 
-                  {role === 'organizer' || role === 'admin' ? 'Dashboard' : 'Mis Tickets'}
+                  {role === 'organizer' || role === 'admin' ? 'Dashboard' : 'Mis QRentradas'}
                 </Button>
               </Link>
                 <button 
