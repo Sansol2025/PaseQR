@@ -131,7 +131,7 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[72px] bg-[#05070A] z-50 animate-in fade-in slide-in-from-top-5 duration-300 overflow-y-auto">
+        <div className="md:hidden fixed inset-0 top-20 bg-[#05070A] z-[100] overflow-y-auto border-t border-white/5">
           <div className="container mx-auto px-6 py-8 flex flex-col gap-8">
             {/* Navegación Principal */}
             <div className="flex flex-col gap-2">
