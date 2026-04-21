@@ -62,6 +62,14 @@ const ROLE_CONFIG: Record<
     border: "border-white/10",
     description: "Comprador de entradas. Solo accede a sus tickets.",
   },
+  admin: {
+    label: "Administrador",
+    icon: <Shield className="w-3.5 h-3.5" />,
+    color: "text-red-400",
+    bg: "bg-red-400/10",
+    border: "border-red-400/30",
+    description: "Acceso total al sistema y gestión de permisos globales.",
+  },
 };
 
 type ConfirmAction =
@@ -95,7 +103,7 @@ function RoleDropdown({
   disabled: boolean;
 }) {
   const [open, setOpen] = useState(false);
-  const roles: UserRole[] = ["organizer", "scanner", "pr", "user"];
+  const roles: UserRole[] = ["admin", "organizer", "scanner", "pr", "user"];
 
   return (
     <div className="relative">

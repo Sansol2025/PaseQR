@@ -12,21 +12,21 @@ export interface Database {
       profiles: {
         Row: {
           id: string
-          role: 'user' | 'organizer' | 'scanner' | 'pr'
+          role: 'user' | 'organizer' | 'scanner' | 'pr' | 'admin'
           full_name: string | null
           email: string | null
           created_at: string
         }
         Insert: {
           id: string
-          role?: 'user' | 'organizer' | 'scanner' | 'pr'
+          role?: 'user' | 'organizer' | 'scanner' | 'pr' | 'admin'
           full_name?: string | null
           email?: string | null
           created_at?: string
         }
         Update: {
           id?: string
-          role?: 'user' | 'organizer' | 'scanner' | 'pr'
+          role?: 'user' | 'organizer' | 'scanner' | 'pr' | 'admin'
           full_name?: string | null
           email?: string | null
           created_at?: string
@@ -172,7 +172,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      user_role: 'user' | 'organizer' | 'scanner' | 'pr'
+      user_role: 'user' | 'organizer' | 'scanner' | 'pr' | 'admin'
       ticket_status: 'valid' | 'scanned' | 'transferred' | 'cancelled'
     }
     CompositeTypes: {

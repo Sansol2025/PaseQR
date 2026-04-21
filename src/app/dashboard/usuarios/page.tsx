@@ -25,7 +25,8 @@ export default async function UsuariosPage() {
     .eq("id", user.id)
     .single();
 
-  if (callerProfile?.role !== "organizer") {
+  const role = callerProfile?.role;
+  if (role !== "organizer" && role !== "admin") {
     redirect("/dashboard");
   }
 

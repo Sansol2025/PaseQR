@@ -2,7 +2,7 @@
 // Este archivo NO tiene directivas "use client" / "use server" para que pueda
 // ser importado tanto desde Server Components como desde Client Components.
 
-export type UserRole = "user" | "organizer" | "scanner" | "pr";
+export type UserRole = "user" | "organizer" | "scanner" | "pr" | "admin";
 
 export interface UserProfile {
   id: string;

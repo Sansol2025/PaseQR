@@ -19,7 +19,8 @@ export async function getAllUsers(): Promise<{ data: UserProfile[] | null; error
     .eq("id", user.id)
     .single();
 
-  if (callerProfile?.role !== "organizer") {
+  const role = callerProfile?.role;
+  if (role !== "organizer" && role !== "admin") {
     return { data: null, error: "Sin permisos" };
   }
 
@@ -48,7 +49,8 @@ export async function updateUserRole(
     .eq("id", user.id)
     .single();
 
-  if (callerProfile?.role !== "organizer") {
+  const role = callerProfile?.role;
+  if (role !== "organizer" && role !== "admin") {
     return { error: "Sin permisos" };
   }
   if (targetUserId === user.id) {
@@ -80,7 +82,8 @@ export async function deleteUser(
     .eq("id", user.id)
     .single();
 
-  if (callerProfile?.role !== "organizer") {
+  const role = callerProfile?.role;
+  if (role !== "organizer" && role !== "admin") {
     return { error: "Sin permisos" };
   }
 
