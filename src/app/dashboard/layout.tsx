@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { LayoutDashboard, Ticket, Users, Settings, LogOut, TicketCheck, Menu, X } from "lucide-react";
+import { LayoutDashboard, Ticket, UserCog, Settings, LogOut, TicketCheck, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function DashboardLayout({
@@ -48,8 +48,8 @@ export default function DashboardLayout({
           <Link href="/dashboard/eventos" onClick={() => setIsSidebarOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 active:bg-white/10 transition-all font-medium">
             <Ticket className="w-5 h-5" /> Mis Eventos
           </Link>
-          <Link href="/dashboard/rrpp" onClick={() => setIsSidebarOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 active:bg-white/10 transition-all font-medium">
-            <Users className="w-5 h-5" /> Equipo RRPP
+          <Link href="/dashboard/usuarios" onClick={() => setIsSidebarOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 active:bg-white/10 transition-all font-medium">
+            <UserCog className="w-5 h-5" /> Usuarios
           </Link>
           <Link href="/dashboard/config" onClick={() => setIsSidebarOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/5 active:bg-white/10 transition-all font-medium">
             <Settings className="w-5 h-5" /> Configuración
