@@ -1,4 +1,5 @@
 "use server";
+// Production deployment trigger - Mercado Pago Integration Active
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
