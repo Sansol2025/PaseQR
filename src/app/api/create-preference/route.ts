@@ -15,7 +15,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No autenticado" }, { status: 401 });
     }
 
-    const { eventId, tierId, tierName, price, eventTitle } = await req.json();
+    const { eventId, tierId } = await req.json();
+
+    // SECURITY BLINDING: Fetch price and titles from DB instead of trusting client input
+    const { data: tier, error: tierError } = await supabase
+      .from('ticket_tiers')
+      .select('name, price, event:events(title)')
+      .eq('id', tierId)
+      .single();
+
+    if (tierError || !tier) {
+      return NextResponse.json({ error: "Lote de entradas no encontrado." }, { status: 404 });
+    }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
@@ -25,9 +36,9 @@ export async function POST(req: NextRequest) {
         items: [
           {
             id: tierId,
-            title: `${eventTitle} - ${tierName}`,
+            title: `${(tier.event as any).title} - ${tier.name}`,
             quantity: 1,
-            unit_price: Number(price),
+            unit_price: Number(tier.price),
             currency_id: "ARS",
           },
         ],
@@ -43,6 +54,8 @@ export async function POST(req: NextRequest) {
         },
         auto_return: "approved",
         notification_url: `${appUrl}/api/webhook/mercadopago`,
+        // External reference for easy tracking
+        external_reference: `${eventId}|${tierId}|${session.user.id}`,
       },
     });
 

@@ -74,7 +74,7 @@ export async function transferTicket(ticketId: string, recipientEmail: string) {
     return { error: error.message || "Ocurrió un error inesperado al transferir." };
   }
 }
-export async function purchaseTicket(eventId: string, tierId: string) {
+export async function purchaseTicket(eventId: string, tierId: string, paymentId?: string) {
   const supabase = await createClient();
 
   // 1. Validate session
@@ -84,11 +84,12 @@ export async function purchaseTicket(eventId: string, tierId: string) {
   }
 
   try {
-    // Call the database function passing user_id explicitly
+    // Call the database function passing user_id regularly and optional payment_id
     const { data: ticketId, error: rpcError } = await supabase.rpc('buy_ticket', {
       p_event_id: eventId,
       p_tier_id: tierId,
-      p_user_id: session.user.id
+      p_user_id: session.user.id,
+      p_payment_id: paymentId || null
     });
 
     if (rpcError) {

@@ -15,11 +15,13 @@ function PagoExitosoContent() {
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
-    const eventId = searchParams.get("external_reference")?.split("|")[0];
-    const tierId = searchParams.get("external_reference")?.split("|")[1];
+    const paymentId = searchParams.get("payment_id");
+    const externalRef = searchParams.get("external_reference");
+    const eventId = externalRef?.split("|")[0];
+    const tierId = externalRef?.split("|")[1];
 
     if (eventId && tierId) {
-      purchaseTicket(eventId, tierId).then(() => setStatus("done"));
+      purchaseTicket(eventId, tierId, paymentId || undefined).then(() => setStatus("done"));
     } else {
       setStatus("done");
     }

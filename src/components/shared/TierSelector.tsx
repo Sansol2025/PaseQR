@@ -50,9 +50,6 @@ export function TierSelector({
           body: JSON.stringify({
             eventId,
             tierId: selectedId,
-            tierName: selectedTier.name,
-            price: selectedTier.price,
-            eventTitle,
           }),
         });
 

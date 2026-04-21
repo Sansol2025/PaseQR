@@ -4,15 +4,12 @@ import { createClient } from "@/lib/supabase/server";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    
-    // Mercado Pago sends payment data in the body
     const { type, data } = body;
     
     if (type !== "payment") {
       return NextResponse.json({ ok: true });
     }
 
-    // Fetch payment details from MP
     const paymentId = data.id;
     const mpResponse = await fetch(
       `https://api.mercadopago.com/v1/payments/${paymentId}`,
@@ -35,16 +32,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing metadata" }, { status: 400 });
     }
 
-    // Create the ticket using our buy_ticket function
     const supabase = await createClient();
+    // PASSING paymentId to ensure idempotency (prevent duplicates)
     const { error } = await supabase.rpc('buy_ticket', {
       p_event_id: event_id,
       p_tier_id: tier_id,
       p_user_id: user_id,
+      p_payment_id: String(paymentId)
     });
 
     if (error) {
-      console.error("Error creating ticket from webhook:", error);
+      console.error("Webhook buy_ticket error:", error);
     }
 
     return NextResponse.json({ ok: true });

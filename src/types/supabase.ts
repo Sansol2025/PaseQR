@@ -188,6 +188,7 @@ export interface Database {
           p_event_id: string
           p_tier_id: string
           p_user_id: string
+          p_payment_id?: string | null
         }
         Returns: string
       }
