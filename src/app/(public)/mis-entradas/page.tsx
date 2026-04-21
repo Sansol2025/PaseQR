@@ -28,20 +28,22 @@ export default function MyTicketsPage() {
 
   useEffect(() => {
     async function fetchTickets() {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      try {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
 
-      if (!user) {
-        router.push("/login");
-        return;
+        if (!session) {
+          router.push("/login");
+          return;
+        }
+
+        // Simulación de carga de tickets reales
+        setTickets([]); 
+      } catch (error) {
+        console.error("Error loading tickets:", error);
+      } finally {
+        setLoading(false);
       }
-
-      // Por ahora no tenemos la tabla de 'purchased_tickets', pero 
-      // dejamos el array vacío para que el usuario vea su billetera real.
-      // Más adelante consultaremos: await supabase.from('user_tickets').select('*, event:events(*)');
-      
-      setTickets([]); 
-      setLoading(false);
     }
     fetchTickets();
   }, [router]);
