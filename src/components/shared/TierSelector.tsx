@@ -2,8 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { Ticket, Check, AlertCircle, RefreshCw } from "lucide-react";
-import { purchaseTicket } from "@/lib/actions/tickets";
+import { Ticket, AlertCircle, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface Tier {
@@ -14,7 +13,15 @@ interface Tier {
   current_sold: number;
 }
 
-export function TierSelector({ tiers, eventId }: { tiers: Tier[]; eventId: string }) {
+export function TierSelector({ 
+  tiers, 
+  eventId, 
+  eventTitle 
+}: { 
+  tiers: Tier[]; 
+  eventId: string; 
+  eventTitle: string;
+}) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -29,22 +36,42 @@ export function TierSelector({ tiers, eventId }: { tiers: Tier[]; eventId: strin
     );
   }
 
+  const selectedTier = tiers.find(t => t.id === selectedId);
+
   const handlePurchase = () => {
-    if (!selectedId) return;
+    if (!selectedId || !selectedTier) return;
     setError(null);
 
     startTransition(async () => {
-      const result = await purchaseTicket(eventId, selectedId);
+      try {
+        const res = await fetch("/api/create-preference", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            eventId,
+            tierId: selectedId,
+            tierName: selectedTier.name,
+            price: selectedTier.price,
+            eventTitle,
+          }),
+        });
 
-      if (result.error) {
-        if (result.error === "AUTH_REQUIRED") {
-          router.push("/login");
-        } else {
-          setError(result.message || "Error al procesar la compra.");
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          if (res.status === 401) {
+            router.push("/login");
+            return;
+          }
+          setError(data.error || "Error al iniciar el pago.");
+          return;
         }
-      } else if (result.success) {
-        // Redirección exitosa (en el futuro sería a Mercado Pago o a una página de éxito)
-        router.push("/mis-entradas");
+
+        // Redirect to Mercado Pago checkout
+        window.location.href = data.init_point;
+
+      } catch (err: any) {
+        setError("No se pudo conectar con el servicio de pago.");
       }
     });
   };
@@ -55,28 +82,34 @@ export function TierSelector({ tiers, eventId }: { tiers: Tier[]; eventId: strin
         <Ticket className="w-5 h-5 text-[#00E5FF]" /> Asegura tu lugar
       </h4>
       <div className="space-y-3">
-        {tiers.map((tier) => (
-          <button
-            key={tier.id}
-            onClick={() => setSelectedId(tier.id)}
-            disabled={isPending}
-            className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 disabled:opacity-50 ${
-              selectedId === tier.id
-                ? "bg-[#00E5FF]/10 border-[#00E5FF] shadow-[0_0_15px_rgba(0,229,255,0.2)]"
-                : "bg-white/5 border-white/5 hover:bg-white/10"
-            }`}
-          >
-            <div className="flex justify-between items-center">
-              <span className={`font-bold ${selectedId === tier.id ? "text-[#00E5FF]" : "text-white"}`}>
-                {tier.name}
-              </span>
-              <span className="text-white font-black">${tier.price}</span>
-            </div>
-            <p className="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1">
-              Últimas {Math.max(0, tier.capacity - tier.current_sold)} unidades
-            </p>
-          </button>
-        ))}
+        {tiers.map((tier) => {
+          const available = tier.capacity - tier.current_sold;
+          const isSoldOut = available <= 0;
+          return (
+            <button
+              key={tier.id}
+              onClick={() => !isSoldOut && setSelectedId(tier.id)}
+              disabled={isPending || isSoldOut}
+              className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 disabled:cursor-not-allowed ${
+                isSoldOut
+                  ? "bg-white/5 border-white/5 opacity-40"
+                  : selectedId === tier.id
+                  ? "bg-[#00E5FF]/10 border-[#00E5FF] shadow-[0_0_15px_rgba(0,229,255,0.2)]"
+                  : "bg-white/5 border-white/5 hover:bg-white/10"
+              }`}
+            >
+              <div className="flex justify-between items-center">
+                <span className={`font-bold ${selectedId === tier.id ? "text-[#00E5FF]" : "text-white"}`}>
+                  {tier.name}
+                </span>
+                <span className="text-white font-black">${tier.price.toLocaleString('es-AR')}</span>
+              </div>
+              <p className="text-white/40 text-[10px] uppercase font-bold tracking-widest mt-1">
+                {isSoldOut ? "AGOTADO" : `Últimas ${available} unidades`}
+              </p>
+            </button>
+          );
+        })}
       </div>
 
       {error && (
@@ -94,7 +127,7 @@ export function TierSelector({ tiers, eventId }: { tiers: Tier[]; eventId: strin
         {isPending ? (
           <>
             <RefreshCw className="w-5 h-5 animate-spin" />
-            Procesando...
+            Iniciando pago...
           </>
         ) : (
           "ADQUIRIR PASE"

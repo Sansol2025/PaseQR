@@ -79,7 +79,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </div>
 
           <div className="lg:col-span-1">
-             <TierSelector tiers={event.ticket_tiers} eventId={event.id} />
+             <TierSelector tiers={event.ticket_tiers} eventId={event.id} eventTitle={event.title} />
           </div>
           
         </div>
