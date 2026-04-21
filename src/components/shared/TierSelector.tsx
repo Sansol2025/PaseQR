@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Ticket, Check, AlertCircle, RefreshCw } from "lucide-react";
