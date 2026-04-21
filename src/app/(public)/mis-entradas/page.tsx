@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { Ticket, Send, History, AlertTriangle, ScreenShare, ShieldCheck, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
