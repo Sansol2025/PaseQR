@@ -5,12 +5,22 @@ import { useState, useEffect } from "react";
 import { Ticket, Search, User, Menu, X, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
-import { logout } from "@/lib/actions/auth";
+import { useRouter } from "next/navigation";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [role, setRole] = useState<string | null>(null);
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUser(null);
+    setRole(null);
+    router.push("/");
+    router.refresh();
+  };
 
   useEffect(() => {
     const supabase = createClient();
@@ -96,11 +106,14 @@ export function Navbar() {
                   {role === 'organizer' || role === 'admin' ? 'Dashboard' : 'Mis Tickets'}
                 </Button>
               </Link>
-              <form action={logout}>
-                <Button variant="ghost" size="icon" className="text-white/40 hover:text-red-400">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="text-white/40 hover:text-red-400"
+                  onClick={handleSignOut}
+                >
                   <LogOut className="w-5 h-5" />
                 </Button>
-              </form>
             </div>
           )}
           
@@ -138,11 +151,13 @@ export function Navbar() {
                   </Button>
                </Link>
             ) : (
-              <form action={logout}>
-                <Button variant="destructive" className="w-full h-14 font-black uppercase text-lg gap-2">
+                <Button 
+                  variant="destructive" 
+                  className="w-full h-14 font-black uppercase text-lg gap-2"
+                  onClick={handleSignOut}
+                >
                   <LogOut className="w-5 h-5" /> Cerrar Sesión
                 </Button>
-              </form>
             )}
           </div>
         </div>
