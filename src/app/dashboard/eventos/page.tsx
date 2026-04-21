@@ -22,6 +22,7 @@ export default function EventosDashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -45,6 +46,14 @@ export default function EventosDashboard() {
 
   useEffect(() => {
     fetchEvents();
+    
+    // Get current user ID
+    const getUser = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) setUserId(user.id);
+    };
+    getUser();
   }, []);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,9 +86,14 @@ export default function EventosDashboard() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    if (!userId) {
+      alert("Error: No se pudo identificar al usuario.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const result = await createEvent({
-      ...formData,
-      organizer_id: '00000000-0000-0000-0000-000000000000'
+      ...formData
     });
 
     if (result.success) {

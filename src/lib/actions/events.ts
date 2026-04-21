@@ -9,9 +9,15 @@ export async function createEvent(formData: {
   date: string;
   location: string;
   cover_image_url?: string;
-  organizer_id: string;
 }) {
   const supabase = await createClient();
+
+  // Obtener el ID del usuario directamente en el servidor
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    return { success: false, error: "Usuario no autenticado" };
+  }
 
   const { data, error } = await supabase
     .from('events')
@@ -22,7 +28,7 @@ export async function createEvent(formData: {
         date: formData.date,
         location: formData.location,
         cover_image_url: formData.cover_image_url || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000',
-        organizer_id: formData.organizer_id,
+        organizer_id: user.id,
       }
     ])
     .select();
