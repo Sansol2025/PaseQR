@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function MyTicketsPage() {
   const [transferEmail, setTransferEmail] = useState("");
@@ -85,7 +86,9 @@ export default function MyTicketsPage() {
           {activeTickets.length === 0 ? (
             <div className="bg-white/5 border border-white/10 rounded-3xl p-10 text-center">
                <p className="text-white/50 mb-4 text-lg">No tienes entradas vigentes.</p>
-               <Button className="font-bold text-[#021227] bg-[#00E5FF] hover:bg-[#00E5FF]/90 uppercase">Explorar Cartelera</Button>
+               <Link href="/eventos">
+                 <Button className="font-bold text-[#021227] bg-[#00E5FF] hover:bg-[#00E5FF]/90 uppercase">Explorar Cartelera</Button>
+               </Link>
             </div>
           ) : (
             <div className="space-y-6">
