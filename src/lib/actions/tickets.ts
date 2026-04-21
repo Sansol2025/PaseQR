@@ -83,49 +83,24 @@ export async function purchaseTicket(eventId: string, tierId: string) {
   }
 
   try {
-    // 2. Get tier info (price and availability)
-    const { data: tier, error: tierError } = await supabase
-      .from('ticket_tiers')
-      .select('*')
-      .eq('id', tierId)
-      .single();
+    // Call the database function we just created
+    const { data: ticketId, error: rpcError } = await supabase.rpc('buy_ticket', {
+      p_event_id: eventId,
+      p_tier_id: tierId
+    });
 
-    if (tierError || !tier) {
-      return { error: "NOT_FOUND", message: "El lote de entradas seleccionado ya no está disponible." };
+    if (rpcError) {
+      console.error("RPC Error:", rpcError);
+      return { 
+        error: "PURCHASE_FAILED", 
+        message: rpcError.message.includes('Stock') ? "El lote se ha agotado." : "Ocurrió un error al procesar tu compra." 
+      };
     }
-
-    if (tier.current_sold >= tier.capacity) {
-      return { error: "SOLD_OUT", message: "Este lote se ha agotado." };
-    }
-
-    // 3. Create the ticket (In a real flow, this would happen AFTER payment notification)
-    // For now, we simulate success for the user to see the flow.
-    const { data: ticket, error: insertError } = await supabase
-      .from('tickets')
-      .insert({
-        event_id: eventId,
-        user_id: session.user.id,
-        tier_id: tierId,
-        status: 'valid',
-        price_paid: tier.price
-      })
-      .select()
-      .single();
-
-    if (insertError) {
-      throw insertError;
-    }
-
-    // 4. Increment sold count in tier
-    await supabase
-      .from('ticket_tiers')
-      .update({ current_sold: (tier.current_sold || 0) + 1 })
-      .eq('id', tierId);
 
     revalidatePath('/mis-entradas');
     revalidatePath(`/eventos/${eventId}`);
     
-    return { success: true, ticketId: ticket.id };
+    return { success: true, ticketId };
 
   } catch (error: any) {
     console.error("Error in purchaseTicket:", error);
