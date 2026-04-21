@@ -187,6 +187,7 @@ export interface Database {
         Args: {
           p_event_id: string
           p_tier_id: string
+          p_user_id: string
         }
         Returns: string
       }

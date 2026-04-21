@@ -83,17 +83,19 @@ export async function purchaseTicket(eventId: string, tierId: string) {
   }
 
   try {
-    // Call the database function we just created
+    // Call the database function passing user_id explicitly
     const { data: ticketId, error: rpcError } = await supabase.rpc('buy_ticket', {
       p_event_id: eventId,
-      p_tier_id: tierId
+      p_tier_id: tierId,
+      p_user_id: session.user.id
     });
 
     if (rpcError) {
-      console.error("RPC Error:", rpcError);
+      console.error("RPC Error full details:", JSON.stringify(rpcError));
       return { 
         error: "PURCHASE_FAILED", 
-        message: rpcError.message.includes('Stock') ? "El lote se ha agotado." : "Ocurrió un error al procesar tu compra." 
+        // Show real error for debugging
+        message: rpcError.message || "Error desconocido al procesar tu compra."
       };
     }
 
@@ -104,7 +106,7 @@ export async function purchaseTicket(eventId: string, tierId: string) {
 
   } catch (error: any) {
     console.error("Error in purchaseTicket:", error);
-    return { error: "INTERNAL_ERROR", message: "Ocurrió un error al procesar tu solicitud." };
+    return { error: "INTERNAL_ERROR", message: error.message || "Ocurrió un error al procesar tu solicitud." };
   }
 }
 
