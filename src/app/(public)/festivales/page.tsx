@@ -6,8 +6,8 @@ export default async function FestivalesPage() {
   const supabase = await createClient();
   
   // Traemos solo los eventos de categoría 'festival'
-  const { data: events, error } = await supabase
-    .from('events')
+  const { data: events, error } = await (supabase
+    .from('events') as any)
     .select('*')
     .eq('category', 'festival')
     .order('date', { ascending: true });

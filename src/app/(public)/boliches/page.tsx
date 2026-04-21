@@ -6,8 +6,8 @@ export default async function BolichesPage() {
   const supabase = await createClient();
   
   // Traemos solo los eventos de categoría 'boliche'
-  const { data: events, error } = await supabase
-    .from('events')
+  const { data: events, error } = await (supabase
+    .from('events') as any)
     .select('*')
     .eq('category', 'boliche')
     .order('date', { ascending: true });
