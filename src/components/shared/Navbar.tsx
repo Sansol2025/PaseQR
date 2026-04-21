@@ -18,8 +18,7 @@ export function Navbar() {
     await supabase.auth.signOut();
     setUser(null);
     setRole(null);
-    router.push("/");
-    router.refresh();
+    window.location.href = "/";
   };
 
   useEffect(() => {
