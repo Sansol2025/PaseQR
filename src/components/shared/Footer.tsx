@@ -14,7 +14,7 @@ export function Footer() {
                 <Ticket className="w-5 h-5 text-[#05070A]" />
               </div>
               <span className="text-xl font-bold tracking-tight text-white uppercase italic">
-                Pase<span className="text-[#00E5FF]">QR</span>
+                QR<span className="text-[#00E5FF]">entradas</span>
               </span>
             </Link>
             <p className="text-sm text-white/50 mb-6 font-light">
@@ -63,7 +63,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/40">
-            &copy; {new Date().getFullYear()} PaseQR Platform. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} QRentradas Platform. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-3">
             <span className="text-xs text-white/40">MÉTODOS DE PAGO:</span>

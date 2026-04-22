@@ -41,7 +41,7 @@ export default function LoginPage() {
              </div>
           </Link>
           <h1 className="text-3xl font-black text-white uppercase italic tracking-tighter">
-            Pase<span className="text-[#00E5FF]">QR</span>
+            QR<span className="text-[#00E5FF]">entradas</span>
           </h1>
           <p className="text-white/40 text-sm mt-2 font-medium tracking-widest uppercase">
             {mode === "login" ? "Bienvenido de vuelta" : "Crea tu cuenta ahora"}
@@ -129,7 +129,7 @@ export default function LoginPage() {
         </div>
 
         <p className="mt-10 text-center text-[10px] text-white/20 uppercase font-bold tracking-[0.2em]">
-          PaseQR Secure Access • v1.0
+          QRentradas Secure Access • v1.0
         </p>
       </div>
     </div>

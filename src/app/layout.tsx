@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PaseQR | Premium Event Tickets & Experiences",
-  description: "La plataforma líder en venta de entradas seguras con códigos QR dinámicos. Vive la experiencia sin fraude.",
+  title: "QRentradas | Eventos & Experiencias Premium",
+  description: "La plataforma líder en venta de entradas seguras con códigos QR. Vive la experiencia sin fraudes.",
 };
 
 export default function RootLayout({
