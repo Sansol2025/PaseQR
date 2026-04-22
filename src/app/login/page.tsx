@@ -41,7 +41,7 @@ export default function LoginPage() {
              </div>
           </Link>
           <h1 className="text-3xl font-black text-white uppercase italic tracking-tighter">
-            QR<span className="text-[#00E5FF]">entradas</span>
+            QR<span className="text-[#00E5FF]">entrada</span>
           </h1>
           <p className="text-white/40 text-sm mt-2 font-medium tracking-widest uppercase">
             {mode === "login" ? "Bienvenido de vuelta" : "Crea tu cuenta ahora"}

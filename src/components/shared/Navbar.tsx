@@ -71,7 +71,7 @@ export function Navbar() {
             <Ticket className="w-5 h-5 text-[#05070A]" />
           </div>
           <span className="text-xl font-bold tracking-tight text-white uppercase italic">
-            QR<span className="text-[#00E5FF]">entradas</span>
+            QR<span className="text-[#00E5FF]">entrada</span>
           </span>
         </Link>
 

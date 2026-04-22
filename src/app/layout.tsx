@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QRentradas | Eventos & Experiencias Premium",
+  title: "QRentrada | Eventos & Experiencias Premium",
   description: "La plataforma líder en venta de entradas seguras con códigos QR. Vive la experiencia sin fraudes.",
 };
 
