@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, Loader2, Ticket } from "lucide-react";
+import { CheckCircle, Loader2, Ticket, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { purchaseTicket } from "@/lib/actions/tickets";
 import Link from "next/link";
