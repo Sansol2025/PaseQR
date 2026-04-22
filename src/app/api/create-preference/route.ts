@@ -40,8 +40,12 @@ export async function POST(req: NextRequest) {
             quantity: 1,
             unit_price: Number(tier.price),
             currency_id: "ARS",
+            category_id: "tickets",
           },
         ],
+        payer: {
+          email: session.user.email,
+        },
         metadata: {
           event_id: eventId,
           tier_id: tierId,
