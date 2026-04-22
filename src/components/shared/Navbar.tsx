@@ -6,6 +6,7 @@ import { Ticket, Search, User, Menu, X, LogOut, LayoutDashboard, Music, Flame, C
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { logout } from "@/lib/actions/auth";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -15,12 +16,9 @@ export function Navbar() {
 
   const handleSignOut = async () => {
     console.log("Iniciando cierre de sesión...");
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    await logout();
     setUser(null);
     setRole(null);
-    console.log("Redirigiendo...");
-    window.location.href = "/";
   };
 
   useEffect(() => {
