@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/shared/Navbar";
 import { Footer } from "@/components/shared/Footer";
-import { HelpCircle, CreditCard, Ticket, ShieldCheck, ChevronDown } from "lucide-react";
+import { HelpCircle, CreditCard, Ticket, ShieldCheck } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function AyudaPage() {
@@ -52,8 +52,6 @@ export default function AyudaPage() {
   return (
     <main className="min-h-screen bg-[#05070A]">
       <Navbar />
-      
-      {/* Hero */}
       <section className="pt-32 pb-16 px-4">
         <div className="container mx-auto text-center">
           <HelpCircle className="w-16 h-16 text-[#00E5FF] mx-auto mb-6 opacity-50" />
@@ -61,12 +59,10 @@ export default function AyudaPage() {
              Centro de <span className="text-[#00E5FF]">Ayuda</span>
           </h1>
           <p className="text-white/40 max-w-2xl mx-auto text-lg">
-            Todo lo que necesitas saber sobre el uso de QRentradas, pagos y acceso a eventos en un solo lugar.
+            Todo lo que necesitas saber sobre el uso de QRentradas.
           </p>
         </div>
       </section>
-
-      {/* FAQs */}
       <section className="pb-24 px-4">
         <div className="container mx-auto max-w-3xl space-y-12">
           {categories.map((cat, idx) => (
@@ -75,20 +71,11 @@ export default function AyudaPage() {
                 {cat.icon}
                 <h3 className="text-xl font-bold text-white uppercase tracking-wider italic">{cat.title}</h3>
               </div>
-              
               <Accordion type="single" collapsible className="w-full space-y-4">
                 {cat.questions.map((item, qIdx) => (
-                  <AccordionItem 
-                    key={qIdx} 
-                    value={`item-${idx}-${qIdx}`}
-                    className="border border-white/5 bg-white/[0.02] rounded-2xl px-6 transition-all data-[state=open]:bg-white/[0.04]"
-                  >
-                    <AccordionTrigger className="text-left text-white font-medium hover:text-[#00E5FF] hover:no-underline py-6">
-                      {item.q}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-white/50 pb-6 text-base leading-relaxed">
-                      {item.a}
-                    </AccordionContent>
+                  <AccordionItem key={qIdx} value={`item-${idx}-${qIdx}`} className="border border-white/5 bg-white/[0.02] rounded-2xl px-6">
+                    <AccordionTrigger className="text-left text-white font-medium py-6 hover:no-underline">{item.q}</AccordionTrigger>
+                    <AccordionContent className="text-white/50 pb-6 text-base">{item.a}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
@@ -96,7 +83,6 @@ export default function AyudaPage() {
           ))}
         </div>
       </section>
-
       <Footer />
     </main>
   );
