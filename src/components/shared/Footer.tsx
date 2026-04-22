@@ -50,10 +50,10 @@ export function Footer() {
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Soporte</h4>
             <ul className="space-y-3">
-              <li><Link href="#" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Centro de Ayuda</Link></li>
-              <li><Link href="#" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Términos y Condiciones</Link></li>
-              <li><Link href="#" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Privacidad</Link></li>
-              <li><Link href="#" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Contacto</Link></li>
+              <li><Link href="/soporte/ayuda" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Centro de Ayuda</Link></li>
+              <li><Link href="/soporte/terminos" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Términos y Condiciones</Link></li>
+              <li><Link href="/soporte/privacidad" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Privacidad</Link></li>
+              <li><Link href="/soporte/contacto" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Contacto</Link></li>
             </ul>
           </div>
 
