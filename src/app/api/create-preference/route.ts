@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
           {
             id: tierId,
             title: `${(tier.event as any).title} - ${tier.name}`,
+            description: `Entrada oficial para el evento ${(tier.event as any).title} - Sector: ${tier.name}`,
             quantity: 1,
             unit_price: Number(tier.price),
             currency_id: "ARS",
