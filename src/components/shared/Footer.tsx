@@ -34,18 +34,16 @@ export function Footer() {
             <ul className="space-y-3">
               <li><Link href="/boliches" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Boliches</Link></li>
               <li><Link href="/festivales" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Festivales</Link></li>
-              <li><Link href="/after-office" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> After Office</Link></li>
-              <li><Link href="/hoy" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Eventos de Hoy</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Organiza</h4>
             <ul className="space-y-3">
-              <li><Link href="/dashboard" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Vende Entradas</Link></li>
-              <li><Link href="#" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Precios</Link></li>
-              <li><Link href="#" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> App de Puerta (Escáner)</Link></li>
-              <li><Link href="#" className="text-sm text-white/60 hover:text-[#00E5FF] transition-colors flex items-center gap-1 group"><ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity"/> Agencias e Influencers</Link></li>
+              <li className="text-sm text-white/40 flex items-center gap-1"> Vende Entradas</li>
+              <li className="text-sm text-white/40 flex items-center gap-1"> Precios</li>
+              <li className="text-sm text-white/40 flex items-center gap-1"> App de Puerta (Escáner)</li>
+              <li className="text-sm text-white/40 flex items-center gap-1"> Agencias e Influencers</li>
             </ul>
           </div>
 
