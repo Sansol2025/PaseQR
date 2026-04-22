@@ -56,6 +56,7 @@ export async function POST(req: NextRequest) {
         notification_url: `${appUrl}/api/webhook/mercadopago`,
         // External reference for easy tracking
         external_reference: `${eventId}|${tierId}|${session.user.id}`,
+        statement_descriptor: "QRENTRADA",
       },
     });
 
